@@ -5,6 +5,9 @@ typedef struct ticket{
     char nameCustomer[20];
     char eventType[20];
     char eventName[20];
+    int ticketTotal;
+    int ticketPrice;
+    int total;
 }ticket;
 
 void create()
@@ -21,15 +24,22 @@ void create()
 
     for (int i = 0; i < n; i++)
     {
+        t[i].total = 0;
         fflush(stdin);
-        printf("Enter Customer Name: ");
+        printf("Enter Customer Name : ");
         scanf("%[^\n]s", t[i].nameCustomer);
         fflush(stdin);
-        printf("Enter Event Type: ");
+        printf("Enter Event Type    : ");
         scanf("%[^\n]s", t[i].eventType);
         fflush(stdin);
-        printf("Enter Event Name: ");
+        printf("Enter Event Name    : ");
         scanf("%[^\n]s", t[i].eventName);
+        fflush(stdin);
+        printf("Enter Total Ticket  : ");
+        scanf("%d", &t[i].ticketTotal);
+        printf("Enter Ticket Price  : ");
+        scanf("%d", &t[i].ticketPrice);
+        t[i].total  = t[i].ticketTotal * t[i].ticketPrice;
         fwrite(&t[i], sizeof(ticket), 1, fp);
     }
     fclose(fp);
@@ -41,13 +51,13 @@ void display()
     FILE *fp;
     int j;
     fp = fopen("sales.txt", "r");
-    printf("==============================================");
+    printf("===================================================");
     while (fread(&t1, sizeof(ticket), 1, fp))
     {
-        printf("\n%-10s%-10s%-10s\n", t1.nameCustomer, t1.eventType, t1.eventName);
-        // printf("%5d\n", t1.total);
+        printf("\n%-10s%-10s%-10s", t1.nameCustomer, t1.eventType, t1.eventName);
+        printf("%-5d%-10d%-10d\n", t1.ticketTotal, t1.ticketPrice, t1.total);
     }
-    printf("==============================================\n");
+    printf("===================================================\n");
     fclose(fp);
 }
 
