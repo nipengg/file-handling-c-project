@@ -24,6 +24,7 @@ void create()
 
     for (int i = 0; i < n; i++)
     {
+        printf("Ticket #%d : \n", i + 1);
         t[i].total = 0;
         fflush(stdin);
         printf("Enter Customer Name : ");
@@ -39,6 +40,7 @@ void create()
         scanf("%d", &t[i].ticketTotal);
         printf("Enter Ticket Price  : ");
         scanf("%d", &t[i].ticketPrice);
+        printf("\n");
         t[i].total  = t[i].ticketTotal * t[i].ticketPrice;
         fwrite(&t[i], sizeof(ticket), 1, fp);
     }
@@ -49,16 +51,25 @@ void display()
 {
     ticket t1;
     FILE *fp;
-    int j;
     fp = fopen("sales.txt", "r");
-    printf("===================================================");
-    while (fread(&t1, sizeof(ticket), 1, fp))
+    if (fp == NULL)
     {
-        printf("\n%-10s%-10s%-10s", t1.nameCustomer, t1.eventType, t1.eventName);
-        printf("%-5d%-10d%-10d\n", t1.ticketTotal, t1.ticketPrice, t1.total);
+        printf("[ERROR] File does not exist. Type 1 to create file\n");
+        system("pause");
     }
-    printf("===================================================\n");
-    fclose(fp);
+    else
+    {
+        int j, i = 0;
+        printf("No. |  Nama           |  Event Type     |  Event Name    |  Ticket Total   |  Ticket Price   |  Total Price    |\n");
+  		printf("================================================================================================================\n");
+        while (fread(&t1, sizeof(ticket), 1, fp))
+        {
+            printf("%-3d | %-15s | %-15s | %-14s | %-15d | Rp.%-12d | Rp.%-12d |\n", ++i, t1.nameCustomer, t1.eventType, t1.eventName, t1.ticketTotal, t1.ticketPrice, t1.total);
+        }
+        printf("================================================================================================================\n");
+        fclose(fp);
+        system("pause");
+    }
 }
 
 int main()
@@ -66,11 +77,11 @@ int main()
     int menu;
     do
     {
-        printf("1. Create\n");
+        printf("\n1. Create\n");
         printf("2. Display\n");
         printf("3. Exit\n");;
 
-        printf("Enter Menu : \n");
+        printf("Enter Menu : ");
         scanf("%d", &menu);
 
         switch (menu)
